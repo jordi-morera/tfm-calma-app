@@ -4,34 +4,35 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { validatePassword } from "@/utils/password";
+import { updateProfileSchema, changePasswordSchema } from "@/lib/schemas";
 
 export async function updateProfile(formData: FormData) {
     const supabase = await createClient()
 
     const { data: { user } } = await supabase.auth.getUser()
-
     if (!user) {
         redirect('/login')
     }
 
-    const fullName = formData.get('fullName') as string
-
-    // We can also handle avatar upload later, for now just text fields
+    const parsed = updateProfileSchema.safeParse(Object.fromEntries(formData))
+    if (!parsed.success) {
+        return { error: parsed.error.issues[0].message }
+    }
 
     const { error } = await supabase
         .from('profiles')
         .update({
-            full_name: fullName,
+            full_name: parsed.data.fullName,
             updated_at: new Date().toISOString(),
         })
         .eq('id', user.id)
 
     if (error) {
-        return { error: 'Could not update profile' }
+        return { error: 'No se pudo actualizar el perfil' }
     }
 
     revalidatePath('/profile')
-    return { message: 'Profile updated successfully' }
+    return { message: 'Perfil actualizado correctamente' }
 }
 
 export async function signOut() {
@@ -43,12 +44,13 @@ export async function signOut() {
 export async function changePassword(formData: FormData) {
     const supabase = await createClient()
 
-    const password = formData.get('new-password') as string
-    const confirmPassword = formData.get('confirm-password') as string
-
-    if (!password || !confirmPassword) {
-        return { error: 'Las contraseñas son obligatorias' }
+    const parsed = changePasswordSchema.safeParse(Object.fromEntries(formData))
+    if (!parsed.success) {
+        return { error: parsed.error.issues[0].message }
     }
+
+    const password = parsed.data['new-password']
+    const confirmPassword = parsed.data['confirm-password']
 
     if (password !== confirmPassword) {
         return { error: 'Las contraseñas no coinciden' }
@@ -59,12 +61,10 @@ export async function changePassword(formData: FormData) {
         return { error: passwordError }
     }
 
-    const { error } = await supabase.auth.updateUser({
-        password: password
-    })
+    const { error } = await supabase.auth.updateUser({ password })
 
     if (error) {
-        console.error('Change password error:', error)
+        console.error('Change password error:', error.message)
         return { error: 'No se pudo actualizar la contraseña' }
     }
 

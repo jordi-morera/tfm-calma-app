@@ -1,32 +1,34 @@
 'use server'
 
 import { createClient } from "@/utils/supabase/server";
+import { contactTherapistSchema } from "@/lib/schemas";
 
 export async function contactTherapist(formData: FormData) {
-    // Validate that we have a user
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    // In a real app we'd probably require auth, but for contact form 
-    // maybe we allow guests too. The instructions imply using user data if available.
-
-    const therapistId = formData.get('therapistId') as string
-    const name = formData.get('name') as string
-    const email = formData.get('email') as string
-    const message = formData.get('message') as string
-    const date = formData.get('date') as string
-
-    if (!therapistId || !name || !email || !message) {
-        return { error: 'Por favor rellena todos los campos obligatorios.' }
+    const parsed = contactTherapistSchema.safeParse(Object.fromEntries(formData))
+    if (!parsed.success) {
+        return { error: parsed.error.issues[0].message }
     }
 
-    // Simulate network delay / email sending
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    const { therapistId, name, email, message, date } = parsed.data
 
-    // Here we would effectively send an email using Resend, Sendgrid, etc.
-    // or insert into a 'messages' table.
+    const { error } = await supabase
+        .from('contact_requests')
+        .insert({
+            therapist_id: therapistId,
+            user_id: user?.id ?? null,
+            name,
+            email,
+            message,
+            preferred_date: date || null,
+        })
 
-    console.log(`Mensaje enviado a terapeuta ${therapistId} por ${email}`);
+    if (error) {
+        console.error('Error guardando solicitud de contacto:', error.message)
+        return { error: 'No se pudo enviar la solicitud. Inténtalo de nuevo.' }
+    }
 
     return { success: true, message: 'Solicitud enviada correctamente. El terapeuta te contactará pronto.' }
 }

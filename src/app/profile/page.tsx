@@ -88,7 +88,7 @@ export default async function ProfilePage() {
                     <div>
                         <h3 className="text-lg font-medium mb-4">Tu Progreso</h3>
                         <div className="grid gap-4 sm:grid-cols-2">
-                            {Object.entries(progressStats).map(([category, stats]: [string, any]) => (
+                            {Object.entries(progressStats).map(([category, stats]: [string, { total: number; completed: number }]) => (
                                 <div key={category} className="space-y-2">
                                     <div className="flex justify-between text-sm">
                                         <span className="font-medium">{category}</span>

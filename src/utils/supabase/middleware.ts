@@ -8,8 +8,6 @@ export async function updateSession(request: NextRequest) {
         },
     })
 
-    console.log('[Middleware] Comprobando sesión para:', request.nextUrl.pathname)
-
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -19,7 +17,7 @@ export async function updateSession(request: NextRequest) {
                     return request.cookies.getAll()
                 },
                 setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+                    cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
                     response = NextResponse.next({
                         request: {
                             headers: request.headers,
@@ -35,15 +33,17 @@ export async function updateSession(request: NextRequest) {
 
     const { data: { user } } = await supabase.auth.getUser()
 
-    // 1. Rutas Protegidas: /profile, /journal
-    if ((request.nextUrl.pathname.startsWith('/profile') || request.nextUrl.pathname.startsWith('/journal')) && !user) {
-        console.log('[Middleware] Acceso no autorizado a ruta protegida. Redirigiendo a /login')
+    const protectedPaths = ['/profile', '/journal']
+    const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
+
+    if (isProtected && !user) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    // 2. Rutas de Auth: /login, /register (Redirigir al perfil si ya se ha iniciado sesión)
-    if ((request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register')) && user) {
-        console.log('[Middleware] Usuario ya logueado. Redirigiendo a /profile')
+    const authPaths = ['/login', '/register']
+    const isAuthPath = authPaths.some(p => request.nextUrl.pathname.startsWith(p))
+
+    if (isAuthPath && user) {
         return NextResponse.redirect(new URL('/profile', request.url))
     }
 

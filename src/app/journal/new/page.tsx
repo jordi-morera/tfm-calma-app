@@ -41,7 +41,7 @@ export default function NewJournalEntryPage() {
                                 <option value="Calmado">😌 Calmado</option>
                                 <option value="Triste">😔 Triste</option>
                                 <option value="Ansioso">😰 Ansioso</option>
-                                <option value="Enofado">😠 Enfado</option>
+                                <option value="Enfado">😠 Enfado</option>
                                 <option value="Cansado">😴 Cansado</option>
                             </select>
                         </div>

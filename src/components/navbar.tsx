@@ -20,7 +20,6 @@ export default async function Navbar() {
             <nav className="hidden md:flex gap-6 text-sm font-medium text-muted-foreground">
                 <Link href="/exercises" className="hover:text-foreground transition-colors">Herramientas</Link>
                 <Link href="/therapists" className="hover:text-foreground transition-colors">Terapeutas</Link>
-                {/* <Link href="#about" className="hover:text-foreground transition-colors">Enfoque</Link> */}
             </nav>
             <div className="flex gap-3">
                 {user ? (
