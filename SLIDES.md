@@ -37,12 +37,12 @@
 *   **Desafío**: Aislamiento y privacidad total de los datos (Diario Emocional).
     *   *Solución*: Implementación de Row Level Security (RLS) en PostgreSQL, garantizando a nivel de base de datos que ni siquiera por error en el código de backend un usuario pueda acceder a datos de otro.
 *   **Desafío**: Mutación de datos segura y tipado estricto entre Cliente/Servidor.
-    *   *Solución*: Uso de *Server Actions* nativos de Next.js, prescindiendo de APIs REST intermedias e implementando validaciones robustas con el objeto estándar `FormData` y manejo de excepciones directas (`throw new Error()`).
+    *   *Solución*: Uso de *Server Actions* nativos de Next.js con validación de esquemas **Zod** en servidor. Los datos del formulario se validan con tipos estrictos antes de cualquier operación en base de datos, redirigiendo con mensaje de error en lugar de lanzar excepciones. Los logs no exponen nunca información personal (PII).
 
 ## Diapositiva 7: Conclusiones y Futuro
 *   **Logros**: MVP funcional, seguro y desplegado.
 *   **Próximos Pasos**:
-    *   Implementar chat en tiempo real con terapeutas.
+    *   Integración de IA: asistente terapéutico conversacional, análisis de sentimientos del diario, recomendaciones personalizadas de ejercicios y matching con terapeuta.
     *   App móvil nativa (React Native).
     *   Gamificación del progreso.
 

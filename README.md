@@ -26,14 +26,16 @@ Para cumplir con los objetivos del proyecto, la aplicación ofrece las siguiente
 *   **Lenguaje**: TypeScript (Tipado estricto para mayor robustez).
 *   **Estilos**: [Tailwind CSS v4](https://tailwindcss.com/) + [Shadcn/ui](https://ui.shadcn.com/) (Diseño accesible y responsive).
 *   **Backend / Auth**: [Supabase](https://supabase.com/) (PostgreSQL, Auth Helpers, RLS).
+*   **Validación**: [Zod](https://zod.dev/) (Validación de formularios en servidor con tipado estricto).
 *   **Testing**: [Playwright](https://playwright.dev/) (Pruebas E2E).
 *   **Extras**: Soporte PWA (Manifest), SEO optimizado, i18n (Código comentado en español).
 *   **Despliegue**: Vercel.
 
 ## 🔒 4. Seguridad y Arquitectura
 La seguridad es un pilar fundamental en **Calma**, dado el tratamiento de datos sensibles:
-*   **Middleware**: Protección de rutas privadas (`/profile`) mediante `src/middleware.ts`, asegurando que solo usuarios autenticados accedan.
-*   **Row Level Security (RLS)**: Políticas de base de datos en PostgreSQL que garantizan que cada usuario solo pueda leer/escribir su propio progreso (`user_progress`) y perfil (`profiles`).
+*   **Middleware**: Protección de rutas privadas (`/profile`, `/journal`) mediante `src/middleware.ts`, asegurando que solo usuarios autenticados accedan.
+*   **Row Level Security (RLS)**: Políticas de base de datos en PostgreSQL que garantizan que cada usuario solo pueda leer/escribir su propio progreso (`user_progress`), perfil (`profiles`) y solicitudes de contacto (`contact_requests`).
+*   **Validación en Servidor**: Esquemas Zod centralizados en `src/lib/schemas.ts` validan todos los formularios antes de interactuar con la base de datos. Los logs nunca exponen PII (emails, nombres de usuario).
 *   **Autenticación**: Gestión de sesiones segura vía Supabase Auth (JWT).
 
 ## 🚀 5. Instalación y Ejecución
@@ -62,7 +64,7 @@ La seguridad es un pilar fundamental en **Calma**, dado el tratamiento de datos 
     ```
 
 4.  **Base de Datos**:
-    Ejecuta el script `db_schema.sql` (incluido en el repo) en el SQL Editor de Supabase para crear tablas y políticas.
+    Ejecuta los scripts de la carpeta `migrations/` en orden numérico en el SQL Editor de Supabase para crear tablas y políticas.
 
 5.  **Ejecutar en desarrollo**:
     ```bash
@@ -86,8 +88,10 @@ npx playwright test
     *   `profile`: Área privada del usuario.
     *   `therapists`: Directorio de profesionales.
 *   `src/components`: UI Kit reutilizable (Navbar, Cards, Alerts).
-*   `src/lib` y `src/utils`: Clientes Supabase y utilidades.
+*   `src/lib`: Esquemas de validación Zod centralizados (`schemas.ts`).
+*   `src/utils`: Clientes Supabase (servidor, cliente, middleware).
 *   `src/middleware.ts`: Barrera de seguridad para rutas protegidas.
+*   `migrations/`: Scripts SQL ordenados para aplicar el esquema en Supabase.
 *   `tests/`: Tests E2E.
 
 ## 📄 8. Presentación
