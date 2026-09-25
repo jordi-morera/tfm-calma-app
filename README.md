@@ -1,101 +1,103 @@
-# Calma - Tu espacio de gestión emocional (TFM)
+# Calma - Your space for emotional wellbeing (Master's Thesis)
 
-> **Trabajo de Fin de Máster - Desarrollo de Aplicaciones Web**
+*[Leer en español](README.es.md)*
 
-**Calma** es una aplicación web diseñada con un enfoque humanista para acompañar a los usuarios en la gestión de sus emociones. Ofrece herramientas prácticas para situaciones de ansiedad, estrés o baja autoestima, facilitando el autoconocimiento y la conexión con terapeutas especializados.
+> **Master's Thesis - Web Application Development**
+
+**Calma** is a web application designed with a humanistic approach to support users in managing their emotions. It offers practical tools for situations of anxiety, stress or low self-esteem, encouraging self-awareness and making it easier to connect with specialised therapists.
 
 ---
 
-## 📌 1. Descripción General
-Este proyecto integra tecnologías modernas de desarrollo web con principios de "Calm Technology" (diseño no intrusivo). Su objetivo es proporcionar un espacio seguro y accesible donde los usuarios puedan:
-*   Realizar ejercicios guiados de gestión emocional (respiración, mindfulness).
-*   Mantener un **Diario Emocional** privado y seguro.
-*   Registrar su progreso y hábitos.
-*   Consultar un **Directorio de Terapeutas** profesionales.
+## 📌 1. Overview
+This project combines modern web development technologies with "Calm Technology" principles (non-intrusive design). Its goal is to provide a safe and accessible space where users can:
+*   Do guided emotional-management exercises (breathing, mindfulness).
+*   Keep a private and secure **Emotional Journal**.
+*   Track their progress and habits.
+*   Browse a **Therapist Directory** of professionals.
 
-## 🌟 2. Funcionalidades Principales
-Para cumplir con los objetivos del proyecto, la aplicación ofrece las siguientes características clave:
-*   **Autenticación y Seguridad:** Registro, inicio de sesión y recuperación de contraseñas. Acceso protegido a áreas privadas mediante Supabase Auth y RLS.
-*   **Catálogo de Ejercicios Guiados:** Biblioteca de ejercicios categorizados (ansiedad, estrés, autoestima) con instrucciones paso a paso.
-*   **Diario Emocional Privado:** Espacio seguro donde el usuario puede registrar diariamente su estado emocional y pensamientos íntimos.
-*   **Área de Perfil y Progreso:** Seguimiento del historial de ejercicios completados y gestión de datos personales.
-*   **Directorio de Profesionales:** Listado de terapeutas verificados para facilitar la búsqueda de ayuda profesional si el usuario lo requiere.
+## 🌟 2. Key Features
+To meet the project's goals, the application offers the following key features:
+*   **Authentication & Security:** Sign-up, login and password recovery. Private areas are protected with Supabase Auth and RLS.
+*   **Guided Exercise Catalogue:** A library of exercises grouped by category (anxiety, stress, self-esteem) with step-by-step instructions.
+*   **Private Emotional Journal:** A safe space where users can record their emotional state and personal thoughts every day.
+*   **Profile & Progress Area:** History of completed exercises and management of personal data.
+*   **Professional Directory:** A list of verified therapists, making it easier to seek professional help when needed.
 
-## 🛠️ 3. Stack Tecnológico
+## 🛠️ 3. Tech Stack
 *   **Frontend**: [Next.js 16](https://nextjs.org/) (App Router, Server Components).
-*   **Lenguaje**: TypeScript (Tipado estricto para mayor robustez).
-*   **Estilos**: [Tailwind CSS v4](https://tailwindcss.com/) + [Shadcn/ui](https://ui.shadcn.com/) (Diseño accesible y responsive).
+*   **Language**: TypeScript (strict typing for robustness).
+*   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + [Shadcn/ui](https://ui.shadcn.com/) (accessible, responsive design).
 *   **Backend / Auth**: [Supabase](https://supabase.com/) (PostgreSQL, Auth Helpers, RLS).
-*   **Validación**: [Zod](https://zod.dev/) (Validación de formularios en servidor con tipado estricto).
-*   **Testing**: [Playwright](https://playwright.dev/) (Pruebas E2E).
-*   **Extras**: Soporte PWA (Manifest), SEO optimizado, i18n (Código comentado en español).
-*   **Despliegue**: Vercel.
+*   **Validation**: [Zod](https://zod.dev/) (strictly typed server-side form validation).
+*   **Testing**: [Playwright](https://playwright.dev/) (E2E tests).
+*   **Extras**: PWA support (manifest), SEO optimised, code comments in Spanish.
+*   **Deployment**: Vercel.
 
-## 🔒 4. Seguridad y Arquitectura
-La seguridad es un pilar fundamental en **Calma**, dado el tratamiento de datos sensibles:
-*   **Middleware**: Protección de rutas privadas (`/profile`, `/journal`) mediante `src/middleware.ts`, asegurando que solo usuarios autenticados accedan.
-*   **Row Level Security (RLS)**: Políticas de base de datos en PostgreSQL que garantizan que cada usuario solo pueda leer/escribir su propio progreso (`user_progress`), perfil (`profiles`) y solicitudes de contacto (`contact_requests`).
-*   **Validación en Servidor**: Esquemas Zod centralizados en `src/lib/schemas.ts` validan todos los formularios antes de interactuar con la base de datos. Los logs nunca exponen PII (emails, nombres de usuario).
-*   **Autenticación**: Gestión de sesiones segura vía Supabase Auth (JWT).
+## 🔒 4. Security & Architecture
+Security is a core pillar of **Calma**, given that it handles sensitive data:
+*   **Middleware**: Private routes (`/profile`, `/journal`) are protected by `src/middleware.ts`, ensuring only authenticated users can access them.
+*   **Row Level Security (RLS)**: PostgreSQL policies guarantee that each user can only read/write their own progress (`user_progress`), profile (`profiles`) and contact requests (`contact_requests`).
+*   **Server-side Validation**: Centralised Zod schemas in `src/lib/schemas.ts` validate every form before touching the database. Logs never expose PII (emails, usernames).
+*   **Authentication**: Secure session management via Supabase Auth (JWT).
 
-## 🚀 5. Instalación y Ejecución
+## 🚀 5. Installation & Running
 
-### Requisitos Previos
-*   Node.js (v18 o superior).
-*   Cuenta en Supabase (y proyecto creado).
+### Prerequisites
+*   Node.js (v18 or later).
+*   A Supabase account (with a project created).
 
-### Pasos
-1.  **Clonar el repositorio**:
+### Steps
+1.  **Clone the repository**:
     ```bash
-    git clone <URL_DEL_REPOSITORIO>
+    git clone <REPOSITORY_URL>
     cd tfm-calma-app
     ```
 
-2.  **Instalar dependencias**:
+2.  **Install dependencies**:
     ```bash
     npm install
     ```
 
-3.  **Configurar variables de entorno**:
-    Crea un archivo `.env.local` en la raíz:
+3.  **Configure environment variables**:
+    Create a `.env.local` file in the project root:
     ```env
-    NEXT_PUBLIC_SUPABASE_URL=tu_url_supabase
-    NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_key_anon
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
     ```
 
-4.  **Base de Datos**:
-    Ejecuta los scripts de la carpeta `migrations/` en orden numérico en el SQL Editor de Supabase para crear tablas y políticas.
+4.  **Database**:
+    Run the scripts in the `migrations/` folder, in numerical order, in the Supabase SQL Editor to create the tables and policies.
 
-5.  **Ejecutar en desarrollo**:
+5.  **Run in development**:
     ```bash
     npm run dev
     ```
-    Visita [http://localhost:3000](http://localhost:3000).
+    Open [http://localhost:3000](http://localhost:3000).
 
 ## ✅ 6. Testing
-El proyecto cuenta con una suite de pruebas End-to-End (E2E) con Playwright para verificar los flujos críticos (Navegación, Auth, Carga).
+The project includes an End-to-End (E2E) test suite with Playwright covering the critical flows (navigation, auth, loading).
 
-Ejecutar tests:
+Run the tests:
 ```bash
 npx playwright test
 ```
 
-## 📁 7. Estructura del Proyecto
-*   `src/app`: Rutas y páginas (App Router).
+## 📁 7. Project Structure
+*   `src/app`: Routes and pages (App Router).
     *   `(auth)`: Login/Register.
-    *   `exercises`: Catálogo y detalle (con lógica de completado).
-    *   `journal`: Diario emocional privado (protegido por RLS).
-    *   `profile`: Área privada del usuario.
-    *   `therapists`: Directorio de profesionales.
-*   `src/components`: UI Kit reutilizable (Navbar, Cards, Alerts).
-*   `src/lib`: Esquemas de validación Zod centralizados (`schemas.ts`).
-*   `src/utils`: Clientes Supabase (servidor, cliente, middleware).
-*   `src/middleware.ts`: Barrera de seguridad para rutas protegidas.
-*   `migrations/`: Scripts SQL ordenados para aplicar el esquema en Supabase.
-*   `tests/`: Tests E2E.
+    *   `exercises`: Catalogue and detail (with completion logic).
+    *   `journal`: Private emotional journal (protected by RLS).
+    *   `profile`: User's private area.
+    *   `therapists`: Professional directory.
+*   `src/components`: Reusable UI kit (Navbar, Cards, Alerts).
+*   `src/lib`: Centralised Zod validation schemas (`schemas.ts`).
+*   `src/utils`: Supabase clients (server, client, middleware).
+*   `src/middleware.ts`: Security barrier for protected routes.
+*   `migrations/`: Ordered SQL scripts to apply the schema in Supabase.
+*   `tests/`: E2E tests.
 
-## 📄 8. Presentación
-El guion y esquema de la presentación para la defensa del TFM se encuentra en el archivo [SLIDES.md](./SLIDES.md).
+## 📄 8. Presentation
+The script and outline for the thesis defence presentation are in [SLIDES.md](./SLIDES.md) (in Spanish).
 
-## 🌐 9. Despliegue
-URL de producción (Demo): [https://tfm-calma-app.vercel.app](https://tfm-calma-app.vercel.app)
+## 🌐 9. Deployment
+Production URL (Demo): [https://tfm-calma-app.vercel.app](https://tfm-calma-app.vercel.app)
